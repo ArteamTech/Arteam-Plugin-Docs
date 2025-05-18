@@ -55,19 +55,19 @@ function Carousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
     {
-      image: "https://via.placeholder.com/1200x400?text=ArMenu&font-size=30&bg=3498db&color=white",
-      title: "ArMenu - 多功能菜单插件",
-      description: "支持自定义GUI菜单、按钮交互逻辑、权限控制"
-    },
-    {
       image: "https://via.placeholder.com/1200x400?text=ArLibs&font-size=30&bg=2ecc71&color=white",
       title: "ArLibs - 基础工具库",
       description: "提供常用MC开发工具类，包含NMS适配、数据存储、事件监听等基础功能"
     },
     {
-      image: "https://via.placeholder.com/1200x400?text=ArGuard&font-size=30&bg=e74c3c&color=white",
-      title: "ArGuard - 服务器安全防护",
-      description: "包含反作弊、IP封禁、命令监控等功能，支持实时日志审计"
+      image: "https://via.placeholder.com/1200x400?text=ArMenu&font-size=30&bg=3498db&color=white",
+      title: "ArMenu - 多功能菜单插件",
+      description: "支持自定义GUI菜单、按钮交互逻辑、权限控制"
+    },
+    {
+      image: "https://via.placeholder.com/1200x400?text=ArChat&font-size=30&bg=e74c3c&color=white",
+      title: "ArChat - 高级聊天插件",
+      description: "包含聊天记录、消息过滤、玩家聊天权限管理等功能，支持实时日志审计"
     }
   ];
 
@@ -133,20 +133,20 @@ function DocCards() {
   
   const docItems = [
     {
-      title: "ArMenu - 多功能菜单插件",
-      description: "支持自定义GUI菜单、按钮交互逻辑、权限控制，兼容1.16-1.20版本",
-      type: "server dev",
-      links: [
-        { label: "服主使用指南", href: "/armenu/server", type: "server" },
-        { label: "开发者API文档", href: "/armenu/dev", type: "dev" }
-      ]
-    },
-    {
       title: "ArLibs - 基础工具库",
       description: "提供常用MC开发工具类，包含NMS适配、数据存储、事件监听等基础功能",
       type: "dev",
       links: [
-        { label: "开发者文档", href: "/arlibs", type: "dev" }
+        { label: "开发者文档", href: "/ArLibs", type: "dev" }
+      ]
+    },
+    {
+      title: "ArMenu - 多功能菜单插件",
+      description: "支持自定义GUI菜单、按钮交互逻辑、权限控制，兼容1.16-1.20版本",
+      type: "server dev",
+      links: [
+        { label: "服主使用指南", href: "/ArMenu", type: "server" },
+        { label: "开发者API文档", href: "/ArMenu/dev", type: "dev" }
       ]
     },
     {
@@ -154,7 +154,8 @@ function DocCards() {
       description: "包含聊天记录、消息过滤、玩家聊天权限管理等功能，支持实时日志审计",
       type: "server",
       links: [
-        { label: "服主配置手册", href: "/archat/server", type: "server" }
+        { label: "服主使用指南", href: "/ArChat", type: "server" },
+        { label: "开发者文档", href: "/ArChat/dev", type: "dev" }
       ]
     }
   ];

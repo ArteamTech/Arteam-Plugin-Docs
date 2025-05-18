@@ -1,0 +1,447 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 7rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/**
+ * 下载页样式
+ */
+
+.downloadPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Banner styles */
+.banner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #4a69bd 0%, #324ea8 100%);
+  color: white;
+}
+
+.bannerInner {
+  display: flex;
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
+  padding: 0 var(--ifm-spacing-horizontal);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bannerContent {
+  max-width: 500px;
+  text-align: left;
+  z-index: 1;
+}
+
+.bannerTitle {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.bannerSubtitleWrapper {
+  margin-bottom: 2rem;
+}
+
+.bannerSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  opacity: 0.9;
+}
+
+.bannerButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.bannerButton {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.buttonIcon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.primaryButton {
+  background-color: #fff;
+  color: #324ea8;
+}
+
+.primaryButton:hover {
+  background-color: #f0f0f0;
+  color: #324ea8;
+  text-decoration: none;
+}
+
+.secondaryButton {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid white;
+}
+
+.secondaryButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  text-decoration: none;
+}
+
+.bannerImageContainer {
+  flex: 0 0 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bannerImage {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.mainContent {
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
+  padding: 2rem var(--ifm-spacing-horizontal);
+}
+
+/* Carousel styles */
+.carousel {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  margin: 3rem 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.carouselImages {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+
+.carouselSlide {
+  flex: 0 0 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.slideContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  color: white;
+}
+
+.slideContent h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+}
+
+.slideContent p {
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.carouselControl {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.3s;
+}
+
+.carouselControl:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.prevButton {
+  left: 20px;
+}
+
+.nextButton {
+  right: 20px;
+}
+
+.carouselDots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.activeDot {
+  background: white;
+}
+
+/* Document section styles */
+.docSection {
+  margin: 4rem 0;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.sectionTitle:after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #324ea8;
+  margin: 0.8rem auto 0;
+  border-radius: 2px;
+}
+
+.docFilter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filterButton {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #e0e0e0;
+  background: #f8f9fa;
+  border-radius: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.activeFilter {
+  background: #324ea8;
+  color: white;
+  border-color: #324ea8;
+}
+
+.docCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.docCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.docCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.docCard h3 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.docCard p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.docLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.docLink {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.server {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.server:hover {
+  background-color: #c0392b;
+  color: white;
+  text-decoration: none;
+}
+
+.dev {
+  background-color: #324ea8;
+  color: white;
+}
+
+.dev:hover {
+  background-color: #253a80;
+  color: white;
+  text-decoration: none;
+}
+
+/* Team advantages styles */
+.advantageSection {
+  margin: 4rem 0;
+}
+
+.advantageCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.advantageCard {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
+}
+
+.advantageCard:hover {
+  transform: translateY(-5px);
+}
+
+.advantageIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #324ea8;
+}
+
+.advantageCard h3 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.advantageCard p {
+  color: #666;
+}
+
+/* Responsive styles */
+@media (max-width: 996px) {
+  .bannerInner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .bannerContent {
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .bannerButtons {
+    justify-content: center;
+  }
+
+  .carousel {
+    height: 300px;
+  }
+
+  .slideContent h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .bannerTitle {
+    font-size: 2.5rem;
+  }
+
+  .bannerSubtitle {
+    font-size: 1.2rem;
+  }
+
+  .carousel {
+    height: 250px;
+  }
+
+  .docCards,
+  .advantageCards {
+    grid-template-columns: 1fr;
+  }
+}

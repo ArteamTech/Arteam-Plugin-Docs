@@ -1,0 +1,62 @@
+{
+  "site.title": {
+    "message": "主页"
+  },
+  "Quick Start \uD83E\uDD75": {
+    "message": "快速开始 \uD83E\uDD75"
+  },
+  "features.1.tag": {
+    "message": "专业"
+  },
+  "features.1.title": {
+    "message": "专业开发"
+  },
+  "features.1.description": {
+    "message": "核心成员拥有丰富的MC插件开发经验\n精通主流服务端框架，致力于提供高质量插件"
+  },
+  "features.2.tag": {
+    "message": "高效"
+  },
+  "features.2.title": {
+    "message": "功能强大"
+  },
+  "features.2.description": {
+    "message": "我们的插件设计高效且功能丰富\n适用于各种服务器场景，满足不同需求\n持续更新与优化"
+  },
+  "features.3.tag": {
+    "message": "开源"
+  },
+  "features.3.title": {
+    "message": "开源共享"
+  },
+  "features.3.description": {
+    "message": "ArTeam 插件在 GitHub 上完全开源\n欢迎社区贡献，共同进步"
+  },
+  "Versatile and flexible GUI creation plugin": {
+    "message": "我的世界插件文档中心"
+  },
+  "download.stable.title": {
+    "message": "稳定版"
+  },
+  "download.stable.description": {
+    "message": "推荐大多数用户使用的稳定版本，经过全面测试，适合生产环境"
+  },
+  "download.button.download": {
+    "message": "下载"
+  },
+  "download.dev.title": {
+    "message": "开发版"
+  },
+  "download.dev.description": {
+    "message": "包含最新功能但可能不够稳定的版本，适合尝试新功能和测试"
+  },
+  "download.source.title": {
+    "message": "源代码"
+  },
+  "download.source.description": {
+    "message": "获取完整源代码，自行编译或为项目做出贡献"
+  },
+  "download.button.github": {
+    "message": "GitHub"
+  }
+}

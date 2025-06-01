@@ -1,0 +1,88 @@
+name: Build and Test
+
+# Trigger workflow on push to main and pull requests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Set environment variables
+env:
+  NODE_VERSION: "18"
+  PNPM_VERSION: "8"
+
+jobs:
+  build-and-test:
+    # Run on Ubuntu latest
+    runs-on: ubuntu-latest
+
+    # Set up job steps
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      # Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+
+      # Get pnpm store directory
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      # Set up pnpm cache
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      # Install dependencies
+      - name: Install dependencies
+        run: pnpm install
+
+      # Cache build output
+      - name: Cache build output
+        uses: actions/cache@v3
+        with:
+          path: |
+            build
+            .docusaurus
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      # Build project
+      - name: Build project
+        run: pnpm build
+
+      # Check build output
+      - name: Check build output
+        run: |
+          if [ ! -d "build" ]; then
+            echo "Build directory not found!"
+            exit 1
+          fi
+
+      # Upload build artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: build/
+          retention-days: 7

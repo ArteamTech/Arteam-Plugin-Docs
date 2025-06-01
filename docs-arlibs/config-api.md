@@ -258,12 +258,284 @@ class ValidatedConfig {
 
 ## ⚠️ 注意事项
 
-1. 配置类必须有无参构造函数
-2. 配置字段必须是可变的（var）
-3. 列表类型的默认值需要特殊处理
-4. 验证器必须正确注册
-5. 配置路径不能包含特殊字符
-6. 注意配置文件的编码（UTF-8）
+### 1. 配置类定义
+
+```kotlin
+// ❌ 错误示例：缺少无参构造函数
+@Config(fileName = "error")
+class ErrorConfig(val someValue: String) {
+    @ConfigValue(path = "value")
+    var value: String = ""
+}
+
+// ✅ 正确示例：提供无参构造函数
+@Config(fileName = "correct")
+class CorrectConfig {
+    constructor() // 显式声明无参构造函数
+
+    @ConfigValue(path = "value")
+    var value: String = ""
+}
+```
+
+### 2. 字段可见性
+
+```kotlin
+@Config(fileName = "visibility")
+class VisibilityConfig {
+    // ❌ 错误示例：私有字段
+    @ConfigValue(path = "private")
+    private var privateValue: String = ""
+
+    // ✅ 正确示例：公开字段
+    @ConfigValue(path = "public")
+    var publicValue: String = ""
+
+    // ✅ 正确示例：使用 getter/setter
+    @ConfigValue(path = "with-accessors")
+    private var _value: String = ""
+    var value: String
+        get() = _value
+        set(value) { _value = value }
+}
+```
+
+### 3. 类型转换
+
+```kotlin
+@Config(fileName = "type-conversion")
+class TypeConversionConfig {
+    // ❌ 错误示例：不明确的类型
+    @ConfigValue(
+        path = "ambiguous",
+        defaultValue = "1,2,3" // 不明确是字符串还是数字列表
+    )
+    var ambiguous: List<Any> = listOf()
+
+    // ✅ 正确示例：明确的类型
+    @ConfigValue(
+        path = "numbers",
+        defaultValue = "1,2,3",
+        type = "List<Int>"
+    )
+    var numbers: List<Int> = listOf()
+
+    // ✅ 正确示例：复杂对象列表
+    @ConfigField(path = "items")
+    var items: List<ItemConfig> = listOf()
+}
+
+class ItemConfig {
+    @ConfigValue(path = "name")
+    var name: String = ""
+
+    @ConfigValue(path = "quantity")
+    var quantity: Int = 0
+}
+```
+
+### 4. 验证器使用
+
+```kotlin
+@Config(fileName = "validation")
+class ValidationConfig {
+    // ❌ 错误示例：未注册的验证器
+    @ConfigValue(
+        path = "invalid",
+        validators = ["NonExistentValidator"]
+    )
+    var invalid: Int = 0
+
+    // ✅ 正确示例：使用内置验证器
+    @ConfigValue(
+        path = "port",
+        defaultValue = "8080",
+        type = "Int",
+        validators = ["PortNumber"]
+    )
+    var port: Int = 8080
+
+    // ✅ 正确示例：多个验证器
+    @ConfigValue(
+        path = "age",
+        defaultValue = "18",
+        type = "Int",
+        validators = ["PositiveNumber", "MaxValue:100"]
+    )
+    var age: Int = 18
+}
+```
+
+### 5. 嵌套配置
+
+```kotlin
+@Config(fileName = "nested")
+class NestedConfig {
+    // ❌ 错误示例：直接嵌套
+    @ConfigValue(path = "nested.value")
+    var nestedValue: String = ""
+
+    // ✅ 正确示例：使用 ConfigField
+    @ConfigField(path = "nested")
+    var nested = NestedSection()
+}
+
+class NestedSection {
+    @ConfigValue(path = "value")
+    var value: String = ""
+}
+```
+
+### 6. 配置重载
+
+```kotlin
+@Config(fileName = "reload")
+class ReloadConfig {
+    @ConfigValue(path = "value")
+    var value: String = ""
+
+    // ✅ 正确示例：处理重载
+    fun onReload() {
+        try {
+            ConfigManager.reloadConfig(ReloadConfig::class)
+            val config = ConfigManager.getConfig(ReloadConfig::class)
+            // 处理重载后的配置
+        } catch (e: Exception) {
+            Logger.severe("配置重载失败: ${e.message}")
+        }
+    }
+}
+```
+
+### 7. 默认值处理
+
+```kotlin
+@Config(fileName = "defaults")
+class DefaultsConfig {
+    // ❌ 错误示例：不匹配的默认值
+    @ConfigValue(
+        path = "number",
+        defaultValue = "not-a-number",
+        type = "Int"
+    )
+    var number: Int = 0
+
+    // ✅ 正确示例：匹配的默认值
+    @ConfigValue(
+        path = "number",
+        defaultValue = "42",
+        type = "Int"
+    )
+    var number: Int = 42
+
+    // ✅ 正确示例：列表默认值
+    @ConfigValue(
+        path = "list",
+        defaultValue = "item1,item2,item3",
+        type = "List<String>"
+    )
+    var list: List<String> = listOf("item1", "item2", "item3")
+}
+```
+
+### 8. 错误处理
+
+```kotlin
+@Config(fileName = "error-handling")
+class ErrorHandlingConfig {
+    @ConfigValue(
+        path = "required",
+        required = true
+    )
+    var required: String = ""
+
+    // ✅ 正确示例：错误处理
+    fun loadConfig() {
+        try {
+            val config = ConfigManager.getConfig(ErrorHandlingConfig::class)
+            if (config.required.isEmpty()) {
+                throw IllegalStateException("必需字段 'required' 未设置")
+            }
+        } catch (e: Exception) {
+            Logger.severe("配置加载失败: ${e.message}")
+            // 使用默认值或采取其他措施
+        }
+    }
+}
+```
+
+## 🔍 调试技巧
+
+### 1. 配置检查
+
+```kotlin
+fun checkConfig() {
+    val config = ConfigManager.getConfig(YourConfig::class)
+
+    // 打印所有配置值
+    config.javaClass.declaredFields.forEach { field ->
+        field.isAccessible = true
+        println("${field.name}: ${field.get(config)}")
+    }
+
+    // 检查必需字段
+    config.javaClass.declaredFields
+        .filter { it.isAnnotationPresent(ConfigValue::class.java) }
+        .filter { it.getAnnotation(ConfigValue::class.java).required }
+        .forEach { field ->
+            field.isAccessible = true
+            if (field.get(config) == null) {
+                println("警告: 必需字段 ${field.name} 为空")
+            }
+        }
+}
+```
+
+### 2. 验证器测试
+
+```kotlin
+fun testValidators() {
+    val validators = ConfigValidator.getValidators()
+
+    // 测试每个验证器
+    validators.forEach { (name, validator) ->
+        println("测试验证器: $name")
+        // 测试有效值
+        val validValue = "test"
+        val validResult = validator.validate(validValue)
+        println("有效值测试: $validResult")
+
+        // 测试无效值
+        val invalidValue = ""
+        val invalidResult = validator.validate(invalidValue)
+        println("无效值测试: $invalidResult")
+    }
+}
+```
+
+### 3. 配置重载测试
+
+```kotlin
+fun testReload() {
+    // 保存当前配置
+    val originalConfig = ConfigManager.getConfig(YourConfig::class)
+
+    // 修改配置文件
+    val configFile = File(ArLibs.getInstance().dataFolder, "your-config.yml")
+    configFile.writeText("""
+        value: "new value"
+        nested:
+          value: "new nested value"
+    """.trimIndent())
+
+    // 重载配置
+    ConfigManager.reloadConfig(YourConfig::class)
+
+    // 检查更改
+    val newConfig = ConfigManager.getConfig(YourConfig::class)
+    println("配置已更改: ${originalConfig != newConfig}")
+}
+```
 
 ## 🔄 更新日志
 

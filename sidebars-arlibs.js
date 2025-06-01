@@ -37,6 +37,11 @@ const sidebars = {
           type: 'doc',
           id: 'action-api',
           label: '动作模块'
+        },
+        {
+          type: 'doc',
+          id: 'condition-api',
+          label: '条件系统'
         }
       ]
     },

@@ -32,6 +32,11 @@ const sidebars = {
           type: 'doc',
           id: 'config-api',
           label: '配置模块'
+        },
+        {
+          type: 'doc',
+          id: 'action-api',
+          label: '动作模块'
         }
       ]
     },

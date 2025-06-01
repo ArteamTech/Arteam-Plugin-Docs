@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@main
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
@@ -31,7 +31,7 @@ jobs:
         run: echo "store_path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
       - name: Cache pnpm store
-        uses: actions/cache@v3
+        uses: actions/cache@main
         with:
           path: ${{ steps.pnpm-store.outputs.store_path }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -42,7 +42,7 @@ jobs:
         run: pnpm install
 
       - name: Cache build output
-        uses: actions/cache@v3
+        uses: actions/cache@main
         with:
           path: |
             build
@@ -62,7 +62,7 @@ jobs:
           fi
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: build-output
           path: build/

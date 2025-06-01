@@ -11,29 +11,44 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@main
+        uses: actions/setup-node@v3
         with:
           node-version: 22.x
-          cache: pnpm
-
-      - name: Install pnpm globally
-        run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          npm install
 
       - name: Build Docusaurus site
-        run: pnpm build
+        run: npm run build
 
       - name: Get Timestamp
         id: timestamp
-        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+        run: echo "::set-output name=timestamp::$(date +%s)"
 
       - name: Deploy Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           name: Website-${{ steps.timestamp.outputs.timestamp }}
           path: build
+
+      - name: List files in build directory
+        run: ls -la build/
+
+      - name: Deploy
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          ARGS: "-avz --delete"
+          SOURCE: "build/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.TARGET }}
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build

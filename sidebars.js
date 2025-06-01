@@ -1,12 +1,12 @@
 /**
- * Creating a sidebar enables you to:
- - create an ordered group of docs
- - render a sidebar for each doc of that group
- - provide next/previous navigation
+ * 创建侧边栏可以让你：
+ - 创建一个有序的文档组
+ - 为该组的每个文档渲染侧边栏
+ - 提供上下导航
 
- The sidebars can be generated from the filesystem, or explicitly defined here.
+ 侧边栏可以从文件系统生成，也可以在这里明确定义。
 
- Create as many sidebars as you want.
+ 可以创建任意数量的侧边栏。
  */
 
 // @ts-check

@@ -105,4 +105,4 @@ ArLibs 计划开发四大核心模块，为插件开发提供全面支持：
 
 ## 许可证
 
-ArLibs 使用 [MIT 许可证](https://github.com/ArTeamTech/ArLibs/blob/main/LICENSE)。
+ArLibs 使用 [LGPL-3.0-1 许可证](https://github.com/ArTeamTech/ArLibs/blob/main/LICENSE)。

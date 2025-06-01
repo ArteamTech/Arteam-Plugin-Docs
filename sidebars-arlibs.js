@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
@@ -22,6 +22,26 @@ const sidebars = {
           type: 'doc',
           id: 'color',
           label: '颜色工具'
+        },
+        {
+          type: 'doc',
+          id: 'command-api',
+          label: '命令模块'
+        },
+        {
+          type: 'doc',
+          id: 'config-api',
+          label: '配置模块'
+        },
+        {
+          type: 'doc',
+          id: 'action-api',
+          label: '动作模块'
+        },
+        {
+          type: 'doc',
+          id: 'condition-api',
+          label: '条件系统'
         }
       ]
     },
@@ -44,11 +64,6 @@ const sidebars = {
           type: 'doc',
           id: 'database',
           label: '数据库模块'
-        },
-        {
-          type: 'doc',
-          id: 'command',
-          label: '命令模块'
         }
       ]
     }

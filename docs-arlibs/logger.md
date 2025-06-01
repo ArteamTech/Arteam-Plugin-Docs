@@ -2,124 +2,229 @@
 sidebar_position: 2
 ---
 
-# 日志系统
+# 日志系统 API 指南 📝
 
-ArLibs 提供了一个增强的日志系统，扩展了 Bukkit 的默认日志功能，支持彩色输出、多插件兼容和异步日志记录。
+> 简单而强大的日志系统，支持颜色格式化和调试模式
 
-## 主要特性
+## 📖 简介
 
-- **彩色输出** - 支持 Minecraft 颜色代码和高级颜色格式
-- **异步日志** - 防止日志操作阻塞主线程
-- **多级别日志** - 支持 INFO、WARNING、SEVERE 和 DEBUG 级别
-- **多插件兼容** - 使用 ThreadLocal 确保在多插件环境中正确识别日志来源
+ArLibs 的日志系统提供了一个灵活而强大的日志记录解决方案，让开发者能够轻松管理和追踪插件运行状态。它支持：
 
-## 基本用法
+- 自动插件上下文检测 🔍
+- 颜色代码支持 🎨
+- 调试模式配置 ⚙️
+- 多级别日志记录 📊
+- 线程安全的日志处理 🔒
 
-### 初始化
+## 🎯 快速开始
 
-在使用日志系统之前，必须先进行初始化，通常在插件的 `onEnable()` 方法中：
+### 1. 初始化日志系统
 
 ```kotlin
-// 初始化日志系统
-Logger.init(this, debug = false)
+// 启用调试模式
+Logger.init(true)
+
+// 禁用调试模式
+Logger.init(false)
 ```
 
-参数说明：
-- `plugin` - 插件实例，用于标识日志来源
-- `debug` - 是否启用调试模式，默认为 false
-
-### 记录日志
+### 2. 基本日志记录
 
 ```kotlin
-// 记录信息级别日志
-Logger.info("插件启动成功!")
+// 信息日志
+Logger.info("这是一条信息日志")
 
-// 记录警告级别日志
-Logger.warn("配置文件缺少必要的设置")
+// 警告日志
+Logger.warn("这是一条警告日志")
 
-// 记录严重错误级别日志
-Logger.severe("无法连接到数据库!")
+// 错误日志
+Logger.severe("这是一条错误日志")
 
-// 记录调试信息 (仅在调试模式开启时显示)
-Logger.debug("玩家数据加载完成: ${player.name}")
+// 调试日志（仅在调试模式启用时显示）
+Logger.debug("这是一条调试日志")
 ```
 
-### 支持颜色代码
-
-日志系统支持 Minecraft 颜色代码和 ArLibs 的 ColorUtil 支持的所有高级颜色格式：
+### 3. 带颜色的日志
 
 ```kotlin
-// 基本颜色代码
-Logger.info("&a这是绿色文本 &b这是蓝绿色文本 &c这是红色文本")
+// 使用颜色代码
+Logger.info("&a成功 &e警告 &c错误")
 
-// 十六进制颜色
-Logger.info("<#FF5733>这是自定义颜色文本")
+// 使用十六进制颜色
+Logger.info("<#FF0000>红色文本</#FF0000>")
 
-// 渐变色
-Logger.info("<gradient:#FF5733:#3399FF>这是渐变文本</gradient>")
-
-// 彩虹效果
-Logger.info("<rainbow>这是彩虹文本</rainbow>")
+// 使用渐变效果
+Logger.info("<gradient:#FF0000:#00FF00>渐变文本</gradient>")
 ```
 
-### 关闭日志系统
+## 🔧 API 详解
 
-在插件禁用时，应当关闭日志系统以释放资源：
+### 1. 日志级别
 
 ```kotlin
-override fun onDisable() {
-    // 其他清理操作...
-    
-    Logger.info("插件已禁用")
-    Logger.close() // 关闭日志系统并释放资源
+// 信息级别 - 用于一般信息
+Logger.info("插件已加载")
+
+// 警告级别 - 用于潜在问题
+Logger.warn("配置文件未找到，使用默认配置")
+
+// 错误级别 - 用于严重问题
+Logger.severe("无法连接到数据库")
+
+// 调试级别 - 用于开发调试
+Logger.debug("正在处理玩家数据...")
+```
+
+### 2. 调试模式
+
+```kotlin
+// 启用调试模式
+Logger.init(true)
+Logger.debug("这条消息会显示")
+
+// 禁用调试模式
+Logger.init(false)
+Logger.debug("这条消息不会显示")
+```
+
+### 3. 异常处理
+
+```kotlin
+try {
+    // 可能抛出异常的代码
+    throw Exception("测试异常")
+} catch (e: Exception) {
+    // 记录异常信息
+    Logger.severe("发生错误: ${e.message}")
+    Logger.debug("详细错误信息: ${e.stackTraceToString()}")
 }
 ```
 
-## 高级用法
+## ⚠️ 注意事项
 
-### 异步日志处理
-
-日志系统默认使用单线程执行器来处理非主线程的日志请求，避免阻塞主线程：
+### 1. 初始化
 
 ```kotlin
-// 在异步线程中记录日志
-Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
-    // 这些日志将在日志线程池中处理，而不是在当前的异步线程
-    Logger.info("正在执行异步操作...")
-    
-    // 严重错误总是同步记录，以确保立即引起注意
-    Logger.severe("发生严重错误!") 
-})
+// ❌ 错误示例：未初始化就使用
+Logger.info("这条消息可能没有插件前缀")
+
+// ✅ 正确示例：先初始化
+Logger.init(true)
+Logger.info("这条消息会带有插件前缀")
 ```
 
-### 在多插件环境中使用
-
-如果你在开发多个使用 ArLibs 的插件，每个插件应该单独初始化日志系统：
+### 2. 调试模式
 
 ```kotlin
-// 在插件 A 中
-class PluginA : JavaPlugin() {
+// ❌ 错误示例：频繁切换调试模式
+fun someFunction() {
+    Logger.init(true)  // 不应该在函数中切换调试模式
+    Logger.debug("调试信息")
+    Logger.init(false)
+}
+
+// ✅ 正确示例：在插件启动时设置一次
+class MyPlugin : JavaPlugin() {
     override fun onEnable() {
-        Logger.init(this, debug = true)
-        Logger.info("插件 A 已启动") // 日志将显示为 [PluginA] 插件 A 已启动
+        Logger.init(debugMode)  // 从配置读取
     }
 }
+```
 
-// 在插件 B 中
-class PluginB : JavaPlugin() {
-    override fun onEnable() {
-        Logger.init(this)
-        Logger.info("插件 B 已启动") // 日志将显示为 [PluginB] 插件 B 已启动
+### 3. 颜色代码
+
+```kotlin
+// ❌ 错误示例：使用无效的颜色代码
+Logger.info("&x无效的颜色代码")  // 无效的格式
+
+// ✅ 正确示例：使用有效的颜色代码
+Logger.info("&a绿色文本 &c红色文本")
+```
+
+## 🔍 调试技巧
+
+### 1. 日志测试
+
+```kotlin
+fun testLogging() {
+    val testCases = listOf(
+        "普通文本",
+        "&a带颜色的文本",
+        "<#FF0000>十六进制颜色</#FF0000>",
+        "<gradient:#FF0000:#00FF00>渐变文本</gradient>"
+    )
+
+    testCases.forEach { message ->
+        try {
+            Logger.info(message)
+            Logger.debug("调试: $message")
+        } catch (e: Exception) {
+            println("日志记录失败: $message")
+            println("错误信息: ${e.message}")
+        }
     }
 }
 ```
 
-## 实现细节
+### 2. 性能测试
 
-以下是日志系统的实现细节，适合有兴趣深入了解其工作原理的开发者：
+```kotlin
+fun testPerformance() {
+    val startTime = System.currentTimeMillis()
 
-- 使用 `ThreadLocal` 存储插件上下文，确保在多线程环境中正确识别日志来源
-- 使用单线程执行器 (`ExecutorService`) 处理异步日志请求，避免竞态条件
-- 通过 `Bukkit.getConsoleSender()` 输出日志，确保颜色代码正确显示
-- 严重错误始终同步记录，确保立即引起注意
-- 集成 `ColorUtil` 处理各种颜色格式 
+    // 测试大量日志记录
+    repeat(1000) { i ->
+        Logger.info("测试日志 $i")
+        Logger.debug("调试信息 $i")
+    }
+
+    val endTime = System.currentTimeMillis()
+    println("日志记录耗时: ${endTime - startTime}ms")
+}
+```
+
+### 3. 异常堆栈跟踪
+
+```kotlin
+fun testExceptionLogging() {
+    try {
+        // 模拟异常
+        throw Exception("测试异常")
+    } catch (e: Exception) {
+        // 记录异常信息
+        Logger.severe("发生错误: ${e.message}")
+
+        // 记录详细堆栈
+        Logger.debug("""
+            异常堆栈:
+            ${e.stackTraceToString()}
+        """.trimIndent())
+    }
+}
+```
+
+## 📚 相关 API
+
+- `Logger.init()` - 初始化日志系统
+- `Logger.info()` - 记录信息日志
+- `Logger.warn()` - 记录警告日志
+- `Logger.severe()` - 记录错误日志
+- `Logger.debug()` - 记录调试日志
+
+## ⚠️ 注意事项
+
+1. 必须在插件启动时初始化日志系统
+2. 调试模式应该从配置文件读取
+3. 避免在循环中频繁切换调试模式
+4. 使用适当的日志级别
+5. 异常信息应该包含足够的上下文
+
+## 🔄 更新日志
+
+- 版本 1.0.0 (2025-05-18)
+  - 初始版本发布
+  - 支持自动插件上下文检测
+  - 支持颜色代码处理
+  - 添加调试模式
+  - 实现多级别日志记录
+  - 添加线程安全支持

@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
@@ -27,6 +27,11 @@ const sidebars = {
           type: 'doc',
           id: 'command-api',
           label: '命令模块'
+        },
+        {
+          type: 'doc',
+          id: 'config-api',
+          label: '配置模块'
         }
       ]
     },

@@ -1,69 +1,39 @@
-name: Build and Test
+name: Build And Upload Artifacts
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-env:
-  NODE_VERSION: "18"
-  PNPM_VERSION: "8"
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 22.x
           cache: pnpm
 
       - name: Install pnpm globally
-        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
-
-      - name: Setup pnpm store caching
-        id: pnpm-store
-        run: echo "store_path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
-
-      - name: Cache pnpm store
-        uses: actions/cache@main
-        with:
-          path: ${{ steps.pnpm-store.outputs.store_path }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Cache build output
-        uses: actions/cache@main
-        with:
-          path: |
-            build
-            .docusaurus
-          key: ${{ runner.os }}-build-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-build-
-
-      - name: Build project
+      - name: Build Docusaurus site
         run: pnpm build
 
-      - name: Check build output
-        run: |
-          if [ ! -d "build" ]; then
-            echo "Build directory not found!"
-            exit 1
-          fi
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@main
+      - name: Deploy Artifact
+        uses: actions/upload-artifact@v2
         with:
-          name: build-output
-          path: build/
-          retention-days: 7
+          name: Website-${{ steps.timestamp.outputs.timestamp }}
+          path: build

@@ -18,12 +18,12 @@ jobs:
         uses: actions/checkout@main
 
       - name: Setup Node.js
-        uses: actions/setup-node@main
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
-      - name: Install pnpm
+      - name: Install pnpm globally
         run: npm install -g pnpm@${{ env.PNPM_VERSION }}
 
       - name: Setup pnpm store caching

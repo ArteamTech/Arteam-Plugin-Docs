@@ -4,13 +4,14 @@
 
 ## 📖 简介
 
-ArLibs 的条件系统提供了以下功能：
+ArLibs 的条件系统提供了一个灵活的条件判断系统，让开发者能够轻松创建和执行各种游戏条件判断。它支持：
 
 - 权限条件检查
 - PlaceholderAPI 占位符比较
 - 逻辑条件组合（AND/OR/NOT）
 - 条件表达式解析
 - 条件缓存机制
+- 条件验证和调试
 
 ## 🎯 快速开始
 
@@ -63,7 +64,7 @@ val nameCheck = ConditionManager.evaluate(player, "%player_name% == Admin")
 
 ### 1. 条件表达式格式
 
-#### 权限条件
+#### 权限条件 🛡️
 
 ```kotlin
 // 完整格式
@@ -77,7 +78,7 @@ val nameCheck = ConditionManager.evaluate(player, "%player_name% == Admin")
 "!myplugin.use"
 ```
 
-#### 占位符条件
+#### 占位符条件 📊
 
 ```kotlin
 // 存在性检查
@@ -92,7 +93,7 @@ val nameCheck = ConditionManager.evaluate(player, "%player_name% == Admin")
 "%player_faction% != None"
 ```
 
-#### 逻辑组合
+#### 逻辑组合 🔄
 
 ```kotlin
 // AND 组合
@@ -108,7 +109,7 @@ val nameCheck = ConditionManager.evaluate(player, "%player_name% == Admin")
 "all [permission myplugin.use; any [%player_level% >= 10; %player_vip% == true]]"
 ```
 
-### 2. 比较操作符
+### 2. 比较操作符 ⚖️
 
 ```kotlin
 // 大于
@@ -130,7 +131,7 @@ val nameCheck = ConditionManager.evaluate(player, "%player_name% == Admin")
 "!=" // 例如: %player_faction% != None
 ```
 
-### 3. 条件管理器
+### 3. 条件管理器 🎮
 
 ```kotlin
 // 评估单个条件
@@ -157,7 +158,7 @@ ConditionManager.getCacheSize()
 
 ## ⚠️ 注意事项
 
-### 1. 权限条件
+### 1. 权限条件 🛡️
 
 ```kotlin
 // ❌ 错误示例：无效的权限格式
@@ -170,7 +171,7 @@ ConditionManager.getCacheSize()
 "!myplugin.use"
 ```
 
-### 2. 占位符条件
+### 2. 占位符条件 📊
 
 ```kotlin
 // ❌ 错误示例：无效的占位符格式
@@ -184,7 +185,7 @@ ConditionManager.getCacheSize()
 "%player_faction% == Admin"
 ```
 
-### 3. 逻辑组合
+### 3. 逻辑组合 🔄
 
 ```kotlin
 // ❌ 错误示例：无效的逻辑组合
@@ -200,7 +201,7 @@ ConditionManager.getCacheSize()
 
 ## 🔍 调试技巧
 
-### 1. 条件测试
+### 1. 条件测试 🧪
 
 ```kotlin
 fun testConditions() {
@@ -226,7 +227,7 @@ fun testConditions() {
 }
 ```
 
-### 2. 性能测试
+### 2. 性能测试 ⚡
 
 ```kotlin
 fun testPerformance() {
@@ -244,7 +245,7 @@ fun testPerformance() {
 }
 ```
 
-### 3. 条件解析测试
+### 3. 条件解析测试 🔍
 
 ```kotlin
 fun testConditionParsing() {
@@ -274,14 +275,14 @@ fun testConditionParsing() {
 
 ## 📚 相关 API
 
-- `ConditionManager` - 条件管理器
-- `ConditionParser` - 条件解析器
-- `ComparisonOperator` - 比较操作符
-- `PermissionCondition` - 权限条件
-- `PlaceholderCondition` - 占位符条件
-- `AllCondition` - 逻辑与条件
-- `AnyCondition` - 逻辑或条件
-- `NotCondition` - 逻辑非条件
+- `ConditionManager` - 条件管理器 🎮
+- `ConditionParser` - 条件解析器 🔍
+- `ComparisonOperator` - 比较操作符 ⚖️
+- `PermissionCondition` - 权限条件 🛡️
+- `PlaceholderCondition` - 占位符条件 📊
+- `AllCondition` - 逻辑与条件 🔄
+- `AnyCondition` - 逻辑或条件 🔄
+- `NotCondition` - 逻辑非条件 🔄
 
 ## ⚠️ 注意事项
 

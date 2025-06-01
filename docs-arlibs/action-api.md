@@ -60,9 +60,23 @@ tell <消息内容>
 
 // 播放声音
 sound <声音>-<音量>-<音调>
+// 音量范围：0.0-10.0
+// 音调范围：0.5-2.0
+// 常用音效：
+// - ENTITY_EXPERIENCE_ORB_PICKUP
+// - ENTITY_PLAYER_LEVELUP
+// - BLOCK_NOTE_BLOCK_PLING
+// - ENTITY_VILLAGER_YES
+// - ENTITY_VILLAGER_NO
+// - BLOCK_ANVIL_USE
+// - ENTITY_ITEM_PICKUP
+// - UI_BUTTON_CLICK
 
 // 显示标题
 title `<主标题>` `<副标题>` <淡入时间> <停留时间> <淡出时间>
+// 时间单位：游戏刻（1秒 = 20刻）
+// 默认值：淡入=10，停留=70，淡出=20
+// 支持变量：%player% 会被替换为玩家名称
 
 // 显示动作栏
 actionbar <消息内容>
@@ -181,6 +195,33 @@ val correctAsync = ActionAPI.parseAction("""
 """.trimIndent())
 ```
 
+### 5. 声音动作注意事项
+
+```kotlin
+// ❌ 错误示例：无效的音效名称
+val wrongSound = ActionAPI.parseAction("sound INVALID_SOUND-1.0-1.0")
+
+// ❌ 错误示例：超出范围的音量或音调
+val wrongVolume = ActionAPI.parseAction("sound ENTITY_PLAYER_LEVELUP-11.0-1.0")  // 音量超出范围
+val wrongPitch = ActionAPI.parseAction("sound ENTITY_PLAYER_LEVELUP-1.0-3.0")    // 音调超出范围
+
+// ✅ 正确示例：使用有效的音效和参数
+val correctSound = ActionAPI.parseAction("sound ENTITY_PLAYER_LEVELUP-1.0-1.0")
+```
+
+### 6. 标题动作注意事项
+
+```kotlin
+// ❌ 错误示例：缺少反引号
+val wrongTitle = ActionAPI.parseAction("title 主标题 副标题 10 40 10")
+
+// ❌ 错误示例：无效的时间值
+val wrongTiming = ActionAPI.parseAction("title `主标题` `副标题` -1 40 10")  // 负的淡入时间
+
+// ✅ 正确示例：正确的标题格式
+val correctTitle = ActionAPI.parseAction("title `主标题` `副标题` 10 40 10")
+```
+
 ## 🔍 调试技巧
 
 ### 1. 动作解析测试
@@ -282,6 +323,9 @@ fun testPerformance() {
 4. 异步操作中不能直接操作主线程
 5. 注意动作执行的顺序
 6. 合理使用动作组合
+7. 声音动作的音量和音调必须在有效范围内
+8. 标题动作必须使用反引号包裹文本
+9. 所有时间相关的参数都使用游戏刻作为单位
 
 ## 🔄 更新日志
 
@@ -292,3 +336,5 @@ fun testPerformance() {
   - 添加动作组合功能
   - 支持异步执行
   - 添加性能监控
+  - 添加声音动作参数验证
+  - 添加标题动作格式化支持

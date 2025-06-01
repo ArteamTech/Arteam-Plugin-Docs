@@ -22,6 +22,11 @@ const sidebars = {
           type: 'doc',
           id: 'color',
           label: '颜色工具'
+        },
+        {
+          type: 'doc',
+          id: 'command-api',
+          label: '命令模块'
         }
       ]
     },
@@ -44,11 +49,6 @@ const sidebars = {
           type: 'doc',
           id: 'database',
           label: '数据库模块'
-        },
-        {
-          type: 'doc',
-          id: 'command',
-          label: '命令模块'
         }
       ]
     }
